@@ -28,7 +28,7 @@ pipe[0] = {
  y : 0
 
 }
-
+var gameOver = false;
 var xPos = 10;
 var yPos = 150;
 var grav = 1.5;
@@ -51,10 +51,10 @@ function draw() {
 
     if(xPos + bird.width >= pipe[i].x
       && xPos <= pipe[i] .x + pipeUp.width
-      && (yPos <= pipe[i].y + pipeUp.height
-         || yPos + bird.height >= pipe[i].y + pipeUp.height + 
-         gap) || yPos + bird.height >= cvs.height - fg.height) {
-          location.reload();
+      && (yPos <= pipe[i].y + pipeUp.height || yPos + bird.height >= pipe[i].y + pipeUp.height + gap) 
+         || yPos + bird.height >= cvs.height - fg.height) {
+          gameOver = true;
+          // console.log("Reload");
          }
 
 
@@ -63,6 +63,10 @@ function draw() {
   ctx.drawImage(bird, xPos, yPos);
 
   yPos += grav;
-  requestAnimationFrame(draw);
+  if (gameOver) {
+    location.reload();
+  } else {
+    requestAnimationFrame(draw);
+  }
 }
  pipeBottom.onload = draw;
