@@ -13,12 +13,19 @@ fg.src = "img/fg.png";
 pipeUp.src = "img/pipeUp.png";
 pipeBottom.src = "img/pipeBottom.png";
 
+var fly = new Audio();
+var score_audio = new Audio();
+
+fly.src = "audio/fly.mp3";
+score_audio.src = "audio/score.mp3";
+
 var gap = 90;
 
 document.addEventListener("keydown", moveUp);
 
 function moveUp() {
-  yPos -= 25;
+  yPos -= 30;
+  fly.play();
 }
 
 var pipe = [];
@@ -32,6 +39,7 @@ var gameOver = false;
 var xPos = 10;
 var yPos = 150;
 var grav = 1.5;
+var score = 0;
 
 function draw() {
   ctx.drawImage(bg, 0, 0);
@@ -54,9 +62,13 @@ function draw() {
       && (yPos <= pipe[i].y + pipeUp.height || yPos + bird.height >= pipe[i].y + pipeUp.height + gap) 
          || yPos + bird.height >= cvs.height - fg.height) {
           gameOver = true;
-          // console.log("Reload");
+          
          }
 
+         if(pipe[i].x == 5) {
+           score++;
+           score_audio.play();
+         }
 
   }
   ctx.drawImage(fg, 0, cvs.height - fg.height);
@@ -68,5 +80,9 @@ function draw() {
   } else {
     requestAnimationFrame(draw);
   }
+
+  ctx.fillStyle = "#000";
+  ctx.font = "20px Verdana";
+  ctx.fillText("Счет: " + score, 10, cvs.height - 20);
 }
  pipeBottom.onload = draw;
